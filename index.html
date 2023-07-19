@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>CHEI Finalized First Round of Potential Mini Grantees </title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/MAOutline_1.js"></script>
+        <script src="data/MAMunicipalitiesOutline_2.js"></script>
+        <script src="data/MiniGranteeServicesImpact_3.js"></script>
+        <script src="data/NumberofServingMAMunicipalities_4.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[40.587143340145275,-73.65969979024588],[43.9002735014122,-68.70959643179219]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Positron_0');
+        map.getPane('pane_Positron_0').style.zIndex = 400;
+        var layer_Positron_0 = L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            pane: 'pane_Positron_0',
+            opacity: 1.0,
+            attribution: '<a href="https://cartodb.com/basemaps/">Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_Positron_0;
+        map.addLayer(layer_Positron_0);
+        function pop_MAOutline_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FNODE_'] !== null ? autolinker.link(feature.properties['FNODE_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>TNODE_</strong><br />' + (feature.properties['TNODE_'] !== null ? autolinker.link(feature.properties['TNODE_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LPOLY_'] !== null ? autolinker.link(feature.properties['LPOLY_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RPOLY_'] !== null ? autolinker.link(feature.properties['RPOLY_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LENGTH'] !== null ? autolinker.link(feature.properties['LENGTH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OUTLINE_'] !== null ? autolinker.link(feature.properties['OUTLINE_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OUTLINE_ID'] !== null ? autolinker.link(feature.properties['OUTLINE_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SYMBOL'] !== null ? autolinker.link(feature.properties['SYMBOL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MAOutline_1_0() {
+            return {
+                pane: 'pane_MAOutline_1',
+                opacity: 1,
+                color: 'rgba(232,113,141,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_MAOutline_1');
+        map.getPane('pane_MAOutline_1').style.zIndex = 401;
+        map.getPane('pane_MAOutline_1').style['mix-blend-mode'] = 'normal';
+        var layer_MAOutline_1 = new L.geoJson(json_MAOutline_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_MAOutline_1',
+            layerName: 'layer_MAOutline_1',
+            pane: 'pane_MAOutline_1',
+            onEachFeature: pop_MAOutline_1,
+            style: style_MAOutline_1_0,
+        });
+        bounds_group.addLayer(layer_MAOutline_1);
+        map.addLayer(layer_MAOutline_1);
+        function pop_MAMunicipalitiesOutline_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BND_QUAL'] !== null ? autolinker.link(feature.properties['BND_QUAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FINISHED'] !== null ? autolinker.link(feature.properties['FINISHED'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BND_UNCLAS'] !== null ? autolinker.link(feature.properties['BND_UNCLAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REASON'] !== null ? autolinker.link(feature.properties['REASON'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OUTLINE'] !== null ? autolinker.link(feature.properties['OUTLINE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_LEN'] !== null ? autolinker.link(feature.properties['SHAPE_LEN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MAMunicipalitiesOutline_2_0() {
+            return {
+                pane: 'pane_MAMunicipalitiesOutline_2',
+                opacity: 1,
+                color: 'rgba(196,60,57,0.2627450980392157)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_MAMunicipalitiesOutline_2');
+        map.getPane('pane_MAMunicipalitiesOutline_2').style.zIndex = 402;
+        map.getPane('pane_MAMunicipalitiesOutline_2').style['mix-blend-mode'] = 'normal';
+        var layer_MAMunicipalitiesOutline_2 = new L.geoJson(json_MAMunicipalitiesOutline_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_MAMunicipalitiesOutline_2',
+            layerName: 'layer_MAMunicipalitiesOutline_2',
+            pane: 'pane_MAMunicipalitiesOutline_2',
+            onEachFeature: pop_MAMunicipalitiesOutline_2,
+            style: style_MAMunicipalitiesOutline_2_0,
+        });
+        bounds_group.addLayer(layer_MAMunicipalitiesOutline_2);
+        map.addLayer(layer_MAMunicipalitiesOutline_2);
+        function pop_MiniGranteeServicesImpact_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Organization Name</th>\
+                        <td>' + (feature.properties['Organization Name'] !== null ? autolinker.link(feature.properties['Organization Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Community of Focus</th>\
+                        <td>' + (feature.properties['Community of Focus'] !== null ? autolinker.link(feature.properties['Community of Focus'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Secondary Population (if applicable)</th>\
+                        <td>' + (feature.properties['Secondary Population (if applicable)'] !== null ? autolinker.link(feature.properties['Secondary Population (if applicable)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Race/Ethnicity (BROAD)</th>\
+                        <td>' + (feature.properties['Race/Ethnicity (BROAD)'] !== null ? autolinker.link(feature.properties['Race/Ethnicity (BROAD)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ethnicities</th>\
+                        <td>' + (feature.properties['Ethnicities'] !== null ? autolinker.link(feature.properties['Ethnicities'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Region</th>\
+                        <td>' + (feature.properties['Region'] !== null ? autolinker.link(feature.properties['Region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Location</th>\
+                        <td>' + (feature.properties['Location'] !== null ? autolinker.link(feature.properties['Location'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Services Impact Score</th>\
+                        <td>' + (feature.properties['Mini-Grantee Score'] !== null ? autolinker.link(feature.properties['Mini-Grantee Score'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Org. Contact'] !== null ? autolinker.link(feature.properties['Org. Contact'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Contact Email'] !== null ? autolinker.link(feature.properties['Contact Email'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Type of Contact'] !== null ? autolinker.link(feature.properties['Type of Contact'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MiniGranteeServicesImpact_3_0(feature) {
+            if (feature.properties['Mini-Grantee Score'] >= 10.100000 && feature.properties['Mini-Grantee Score'] <= 10.900000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 7.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 10.900000 && feature.properties['Mini-Grantee Score'] <= 13.100000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 8.714285714285714,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 13.100000 && feature.properties['Mini-Grantee Score'] <= 15.900000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 10.428571428571429,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 15.900000 && feature.properties['Mini-Grantee Score'] <= 18.200000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 12.142857142857142,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 18.200000 && feature.properties['Mini-Grantee Score'] <= 21.100000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 13.857142857142858,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 21.100000 && feature.properties['Mini-Grantee Score'] <= 35.100000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 15.571428571428571,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 35.100000 && feature.properties['Mini-Grantee Score'] <= 47.600000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 17.285714285714285,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Mini-Grantee Score'] >= 47.600000 && feature.properties['Mini-Grantee Score'] <= 52.600000 ) {
+                return {
+                pane: 'pane_MiniGranteeServicesImpact_3',
+                radius: 19.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,129,255,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_MiniGranteeServicesImpact_3');
+        map.getPane('pane_MiniGranteeServicesImpact_3').style.zIndex = 403;
+        map.getPane('pane_MiniGranteeServicesImpact_3').style['mix-blend-mode'] = 'normal';
+        var layer_MiniGranteeServicesImpact_3 = new L.geoJson(json_MiniGranteeServicesImpact_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MiniGranteeServicesImpact_3',
+            layerName: 'layer_MiniGranteeServicesImpact_3',
+            pane: 'pane_MiniGranteeServicesImpact_3',
+            onEachFeature: pop_MiniGranteeServicesImpact_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_MiniGranteeServicesImpact_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_MiniGranteeServicesImpact_3);
+        function pop_NumberofServingMAMunicipalities_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Organization Name</th>\
+                        <td>' + (feature.properties['Organization Name'] !== null ? autolinker.link(feature.properties['Organization Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Community of Focus</th>\
+                        <td>' + (feature.properties['Community of Focus'] !== null ? autolinker.link(feature.properties['Community of Focus'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Secondary Population (if applicable)</th>\
+                        <td>' + (feature.properties['Secondary Population (if applicable)'] !== null ? autolinker.link(feature.properties['Secondary Population (if applicable)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Race/Ethnicity (BROAD)</th>\
+                        <td>' + (feature.properties['Race/Ethnicity (BROAD)'] !== null ? autolinker.link(feature.properties['Race/Ethnicity (BROAD)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ethnicities</th>\
+                        <td>' + (feature.properties['Ethnicities'] !== null ? autolinker.link(feature.properties['Ethnicities'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Region</th>\
+                        <td>' + (feature.properties['Region'] !== null ? autolinker.link(feature.properties['Region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Number of Municipalities</th>\
+                        <td>' + (feature.properties['Number of Municipalities'] !== null ? autolinker.link(feature.properties['Number of Municipalities'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Location</th>\
+                        <td>' + (feature.properties['Location'] !== null ? autolinker.link(feature.properties['Location'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Org. Contact'] !== null ? autolinker.link(feature.properties['Org. Contact'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Contact Email'] !== null ? autolinker.link(feature.properties['Contact Email'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Type of Contact'] !== null ? autolinker.link(feature.properties['Type of Contact'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_NumberofServingMAMunicipalities_4_0(feature) {
+            if (feature.properties['Number of Municipalities'] >= 1.000000 && feature.properties['Number of Municipalities'] <= 1.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,178,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 1.000000 && feature.properties['Number of Municipalities'] <= 3.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,226,129,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 3.000000 && feature.properties['Number of Municipalities'] <= 9.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,195,87,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 9.000000 && feature.properties['Number of Municipalities'] <= 12.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,159,69,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 12.000000 && feature.properties['Number of Municipalities'] <= 15.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(249,118,52,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 15.000000 && feature.properties['Number of Municipalities'] <= 32.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,71,36,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 32.000000 && feature.properties['Number of Municipalities'] <= 46.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(218,34,35,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Number of Municipalities'] >= 46.000000 && feature.properties['Number of Municipalities'] <= 351.000000 ) {
+                return {
+                pane: 'pane_NumberofServingMAMunicipalities_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,0,38,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_NumberofServingMAMunicipalities_4');
+        map.getPane('pane_NumberofServingMAMunicipalities_4').style.zIndex = 404;
+        map.getPane('pane_NumberofServingMAMunicipalities_4').style['mix-blend-mode'] = 'normal';
+        var layer_NumberofServingMAMunicipalities_4 = new L.geoJson(json_NumberofServingMAMunicipalities_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_NumberofServingMAMunicipalities_4',
+            layerName: 'layer_NumberofServingMAMunicipalities_4',
+            pane: 'pane_NumberofServingMAMunicipalities_4',
+            onEachFeature: pop_NumberofServingMAMunicipalities_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_NumberofServingMAMunicipalities_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_NumberofServingMAMunicipalities_4);
+        map.addLayer(layer_NumberofServingMAMunicipalities_4);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>CHEI Finalized First Round of Potential Mini Grantees </h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomleft'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'This is a web map designed to visualize the finalized first round of potential mini grantees for the CHEI project in Massachussetts in July 2023. ';
+            };
+            abstract.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Number of Serving MA Municipalities<br /><table><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_120.png" /></td><td>1 - 2</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_231.png" /></td><td>2 - 3</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_392.png" /></td><td>3 - 9</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_9123.png" /></td><td>9 - 12</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_12154.png" /></td><td>12 - 15</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_15325.png" /></td><td>15 - 32</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_32466.png" /></td><td>32 - 46</td></tr><tr><td style="text-align: center;"><img src="legend/NumberofServingMAMunicipalities_4_463517.png" /></td><td>46 - 351</td></tr></table>': layer_NumberofServingMAMunicipalities_4,'Mini-Grantee Services Impact<br /><table><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_1011090.png" /></td><td>10.1 - 10.9</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_1091311.png" /></td><td>10.9 - 13.1</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_1311592.png" /></td><td>13.1 - 15.9</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_1591823.png" /></td><td>15.9 - 18.2</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_1822114.png" /></td><td>18.2 - 21.1</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_2113515.png" /></td><td>21.1 - 35.1</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_3514766.png" /></td><td>35.1 - 47.6</td></tr><tr><td style="text-align: center;"><img src="legend/MiniGranteeServicesImpact_3_4765267.png" /></td><td>47.6 - 52.6</td></tr></table>': layer_MiniGranteeServicesImpact_3,'<img src="legend/MAMunicipalitiesOutline_2.png" /> MA Municipalities Outline ': layer_MAMunicipalitiesOutline_2,'<img src="legend/MAOutline_1.png" /> MA Outline ': layer_MAOutline_1,"Positron": layer_Positron_0,}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"Number of Municipalities": "int","Mini-Grantee Score": "real","Region": "str","Organization Name": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_NumberofMunicipalities = document.createElement("div");
+            div_NumberofMunicipalities.id = "div_NumberofMunicipalities";
+            div_NumberofMunicipalities.className = "slider";
+            document.getElementById("menu").appendChild(div_NumberofMunicipalities);
+            var lab_NumberofMunicipalities = document.createElement('div');
+            lab_NumberofMunicipalities.innerHTML  = 'Number of Municipalities: <span id="val_NumberofMunicipalities"></span>';
+            lab_NumberofMunicipalities.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_NumberofMunicipalities);
+            var reset_NumberofMunicipalities = document.createElement('div');
+            reset_NumberofMunicipalities.innerHTML = 'clear filter';
+            reset_NumberofMunicipalities.className = 'filterlabel';
+            lab_NumberofMunicipalities.className = 'filterlabel';
+            reset_NumberofMunicipalities.onclick = function() {
+                sel_NumberofMunicipalities.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_NumberofMunicipalities);
+            var sel_NumberofMunicipalities = document.getElementById('div_NumberofMunicipalities');
+            noUiSlider.create(sel_NumberofMunicipalities, {
+                connect: true,
+                start: [1, 351],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 1,
+                max: 351
+                }
+            });
+            sel_NumberofMunicipalities.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_NumberofMunicipalities = document.getElementById('val_NumberofMunicipalities');
+            val_NumberofMunicipalities.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_MiniGranteeScore = document.createElement("div");
+            div_MiniGranteeScore.id = "div_MiniGranteeScore";
+            div_MiniGranteeScore.className = "slider";
+            document.getElementById("menu").appendChild(div_MiniGranteeScore);
+            var lab_MiniGranteeScore = document.createElement('div');
+            lab_MiniGranteeScore.innerHTML  = 'Mini-Grantee Score: <span id="val_MiniGranteeScore"></span>';
+            lab_MiniGranteeScore.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_MiniGranteeScore);
+            var reset_MiniGranteeScore = document.createElement('div');
+            reset_MiniGranteeScore.innerHTML = 'clear filter';
+            reset_MiniGranteeScore.className = 'filterlabel';
+            lab_MiniGranteeScore.className = 'filterlabel';
+            reset_MiniGranteeScore.onclick = function() {
+                sel_MiniGranteeScore.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_MiniGranteeScore);
+            var sel_MiniGranteeScore = document.getElementById('div_MiniGranteeScore');
+            noUiSlider.create(sel_MiniGranteeScore, {
+                connect: true,
+                start: [10.1, 52.6],
+                range: {
+                min: 10.1,
+                max: 52.6
+                }
+            });
+            sel_MiniGranteeScore.noUiSlider.on('update', function (values) {
+            val_MiniGranteeScore = document.getElementById('val_MiniGranteeScore');
+            val_MiniGranteeScore.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Region = document.createElement('div');
+            div_Region.id = "div_Region";
+            div_Region.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Region);
+            sel_Region = document.createElement('select');
+            sel_Region.multiple = true;
+            sel_Region.size = 5;
+            sel_Region.id = "sel_Region";
+            var Region_options_str = "<option value='' unselected></option>";
+            sel_Region.onchange = function(){filterFunc()};
+            Region_options_str  += '<option value="Cape and Islands">Cape and Islands</option>';
+            Region_options_str  += '<option value="Central MA">Central MA</option>';
+            Region_options_str  += '<option value="Eastern MA">Eastern MA</option>';
+            Region_options_str  += '<option value="Statewide">Statewide</option>';
+            Region_options_str  += '<option value="Western MA">Western MA</option>';
+            sel_Region.innerHTML = Region_options_str;
+            div_Region.appendChild(sel_Region);
+            var lab_Region = document.createElement('div');
+            lab_Region.innerHTML = 'Region';
+            lab_Region.className = 'filterlabel';
+            div_Region.appendChild(lab_Region);
+            var reset_Region = document.createElement('div');
+            reset_Region.innerHTML = 'clear filter';
+            reset_Region.className = 'filterlabel';
+            reset_Region.onclick = function() {
+                var options = document.getElementById("sel_Region").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Region.appendChild(reset_Region);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_OrganizationName = document.createElement('div');
+            div_OrganizationName.id = "div_OrganizationName";
+            div_OrganizationName.className= "filterselect";
+            document.getElementById("menu").appendChild(div_OrganizationName);
+            sel_OrganizationName = document.createElement('select');
+            sel_OrganizationName.multiple = true;
+            sel_OrganizationName.size = 10;
+            sel_OrganizationName.id = "sel_OrganizationName";
+            var OrganizationName_options_str = "<option value='' unselected></option>";
+            sel_OrganizationName.onchange = function(){filterFunc()};
+            OrganizationName_options_str  += '<option value="18 Degrees">18 Degrees</option>';
+            OrganizationName_options_str  += '<option value="Advocates">Advocates</option>';
+            OrganizationName_options_str  += '<option value="All Inclusive Support Services">All Inclusive Support Services</option>';
+            OrganizationName_options_str  += '<option value="Asian Task Force Against Domestic Violence">Asian Task Force Against Domestic Violence</option>';
+            OrganizationName_options_str  += '<option value="Authentic Caribbean Foundation">Authentic Caribbean Foundation</option>';
+            OrganizationName_options_str  += '<option value="BAMSI">BAMSI</option>';
+            OrganizationName_options_str  += '<option value="Berkshire Immigrant Center">Berkshire Immigrant Center</option>';
+            OrganizationName_options_str  += '<option value="Black Autism Coalition">Black Autism Coalition</option>';
+            OrganizationName_options_str  += '<option value="Boston Chinatown Neighborhood Center">Boston Chinatown Neighborhood Center</option>';
+            OrganizationName_options_str  += '<option value="Cambodian Mutual Assistance Association">Cambodian Mutual Assistance Association</option>';
+            OrganizationName_options_str  += '<option value="Center for Arabic Culture">Center for Arabic Culture</option>';
+            OrganizationName_options_str  += '<option value="Chappaquiddick Wampanoag Tribe">Chappaquiddick Wampanoag Tribe</option>';
+            OrganizationName_options_str  += '<option value="DEAF Inc (Boston Office)">DEAF Inc (Boston Office)</option>';
+            OrganizationName_options_str  += '<option value="DEAF Inc (Lawrence Office)">DEAF Inc (Lawrence Office)</option>';
+            OrganizationName_options_str  += '<option value="DEAF Inc (Salem Office)">DEAF Inc (Salem Office)</option>';
+            OrganizationName_options_str  += '<option value="Disability Policy Consortium">Disability Policy Consortium</option>';
+            OrganizationName_options_str  += '<option value="Enlace de Familias">Enlace de Familias</option>';
+            OrganizationName_options_str  += '<option value="Family Services of the Merrimack Valley">Family Services of the Merrimack Valley</option>';
+            OrganizationName_options_str  += '<option value="Father Bill&apos;s & MainSpring (Administrative Office)">Father Bill&apos;s & MainSpring (Administrative Office)</option>';
+            OrganizationName_options_str  += '<option value="Father Bill&apos;s & MainSpring (Father Bill&apos;s Place) ">Father Bill&apos;s & MainSpring (Father Bill&apos;s Place) </option>';
+            OrganizationName_options_str  += '<option value="Father Bill&apos;s & MainSpring (MainSpring House)">Father Bill&apos;s & MainSpring (MainSpring House)</option>';
+            OrganizationName_options_str  += '<option value="Federation for Children with Special Needs">Federation for Children with Special Needs</option>';
+            OrganizationName_options_str  += '<option value="Fundacion CEMDPCD">Fundacion CEMDPCD</option>';
+            OrganizationName_options_str  += '<option value="Haitian Community Partners Foundation">Haitian Community Partners Foundation</option>';
+            OrganizationName_options_str  += '<option value="Health Imparetives (Hyannis)">Health Imparetives (Hyannis)</option>';
+            OrganizationName_options_str  += '<option value="Health Imparetives (Martha&apos;s Vineyard)">Health Imparetives (Martha&apos;s Vineyard)</option>';
+            OrganizationName_options_str  += '<option value="Health Imparetives (New Bedford) ">Health Imparetives (New Bedford) </option>';
+            OrganizationName_options_str  += '<option value="Health Imparetives (Plymouth)">Health Imparetives (Plymouth)</option>';
+            OrganizationName_options_str  += '<option value="Health Imparetives (Wareham)">Health Imparetives (Wareham)</option>';
+            OrganizationName_options_str  += '<option value="Health Imperatives (Administrative Office)">Health Imperatives (Administrative Office)</option>';
+            OrganizationName_options_str  += '<option value="Healthy Families">Healthy Families</option>';
+            OrganizationName_options_str  += '<option value="Herring Pond Wampanoag Tribe">Herring Pond Wampanoag Tribe</option>';
+            OrganizationName_options_str  += '<option value="Hilltown CDC">Hilltown CDC</option>';
+            OrganizationName_options_str  += '<option value="Immigrants Assistance Center, Inc.">Immigrants Assistance Center, Inc.</option>';
+            OrganizationName_options_str  += '<option value="Islamic Society of Boston CC">Islamic Society of Boston CC</option>';
+            OrganizationName_options_str  += '<option value="Justice 4 Housing">Justice 4 Housing</option>';
+            OrganizationName_options_str  += '<option value="Justice Resource Institute">Justice Resource Institute</option>';
+            OrganizationName_options_str  += '<option value="LGBT Elders of Color">LGBT Elders of Color</option>';
+            OrganizationName_options_str  += '<option value="LGBTQ Asylum Task Force">LGBTQ Asylum Task Force</option>';
+            OrganizationName_options_str  += '<option value="La Colaborativa">La Colaborativa</option>';
+            OrganizationName_options_str  += '<option value="Latino Education Institute">Latino Education Institute</option>';
+            OrganizationName_options_str  += '<option value="Latinx in Action">Latinx in Action</option>';
+            OrganizationName_options_str  += '<option value="Mary Lyon Foundation">Mary Lyon Foundation</option>';
+            OrganizationName_options_str  += '<option value="Massachusetts Alliance of Portuguese Speakers (MAPS), Cambridge">Massachusetts Alliance of Portuguese Speakers (MAPS), Cambridge</option>';
+            OrganizationName_options_str  += '<option value="Massachusetts Alliance of Portuguese Speakers (MAPS), Dorchester">Massachusetts Alliance of Portuguese Speakers (MAPS), Dorchester</option>';
+            OrganizationName_options_str  += '<option value="Men of Color Health Awareness (MOCHA)">Men of Color Health Awareness (MOCHA)</option>';
+            OrganizationName_options_str  += '<option value="Multicultural AIDS Coalition">Multicultural AIDS Coalition</option>';
+            OrganizationName_options_str  += '<option value="Muslim Community Link">Muslim Community Link</option>';
+            OrganizationName_options_str  += '<option value="New American Association of MA">New American Association of MA</option>';
+            OrganizationName_options_str  += '<option value="New England Center and Home for Veterans">New England Center and Home for Veterans</option>';
+            OrganizationName_options_str  += '<option value="Nipmuc Nation">Nipmuc Nation</option>';
+            OrganizationName_options_str  += '<option value="North American Indian Center of Boston">North American Indian Center of Boston</option>';
+            OrganizationName_options_str  += '<option value="North Quabbin Community Coalition">North Quabbin Community Coalition</option>';
+            OrganizationName_options_str  += '<option value="Northern Berkshire Community Coalition">Northern Berkshire Community Coalition</option>';
+            OrganizationName_options_str  += '<option value="Ohketeau Cultural Center">Ohketeau Cultural Center</option>';
+            OrganizationName_options_str  += '<option value="Outer Cape Health Services">Outer Cape Health Services</option>';
+            OrganizationName_options_str  += '<option value="PureSpark">PureSpark</option>';
+            OrganizationName_options_str  += '<option value="Quaboag Valley CDC">Quaboag Valley CDC</option>';
+            OrganizationName_options_str  += '<option value="Quincy Asian Resources Inc QARI">Quincy Asian Resources Inc QARI</option>';
+            OrganizationName_options_str  += '<option value="ROCA Boston ">ROCA Boston </option>';
+            OrganizationName_options_str  += '<option value="ROCA Chelsea">ROCA Chelsea</option>';
+            OrganizationName_options_str  += '<option value="ROCA Holyoke ">ROCA Holyoke </option>';
+            OrganizationName_options_str  += '<option value="ROCA Lynn">ROCA Lynn</option>';
+            OrganizationName_options_str  += '<option value="ROCA Springfield ">ROCA Springfield </option>';
+            OrganizationName_options_str  += '<option value="Seven Hills">Seven Hills</option>';
+            OrganizationName_options_str  += '<option value="Somali Parents Advocacy Center for Education (SPACE)">Somali Parents Advocacy Center for Education (SPACE)</option>';
+            OrganizationName_options_str  += '<option value="Southeast Asian Coalition of Central MA">Southeast Asian Coalition of Central MA</option>';
+            OrganizationName_options_str  += '<option value="Spanish American Center">Spanish American Center</option>';
+            OrganizationName_options_str  += '<option value="Stavros Center for Independent Living">Stavros Center for Independent Living</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, Greenfield">Tapestry Health, Greenfield</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, Holyoke">Tapestry Health, Holyoke</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, North Adams">Tapestry Health, North Adams</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, Northhampton">Tapestry Health, Northhampton</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, Pittsfield">Tapestry Health, Pittsfield</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, Springfield">Tapestry Health, Springfield</option>';
+            OrganizationName_options_str  += '<option value="Tapestry Health, Westfield">Tapestry Health, Westfield</option>';
+            OrganizationName_options_str  += '<option value="VietAID">VietAID</option>';
+            OrganizationName_options_str  += '<option value="Volunteers in Medicine">Volunteers in Medicine</option>';
+            OrganizationName_options_str  += '<option value="Worcester Youth Center">Worcester Youth Center</option>';
+            sel_OrganizationName.innerHTML = OrganizationName_options_str;
+            div_OrganizationName.appendChild(sel_OrganizationName);
+            var lab_OrganizationName = document.createElement('div');
+            lab_OrganizationName.innerHTML = 'Organization Name';
+            lab_OrganizationName.className = 'filterlabel';
+            div_OrganizationName.appendChild(lab_OrganizationName);
+            var reset_OrganizationName = document.createElement('div');
+            reset_OrganizationName.innerHTML = 'clear filter';
+            reset_OrganizationName.className = 'filterlabel';
+            reset_OrganizationName.onclick = function() {
+                var options = document.getElementById("sel_OrganizationName").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_OrganizationName.appendChild(reset_OrganizationName);
+        </script>
+    </body>
+</html>
